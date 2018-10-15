@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Marker } from '../../classes/marker.class';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-map',
@@ -13,7 +14,7 @@ export class MapComponent implements OnInit {
   lat = 51.678418;
   lng = 7.809007;
 
-  constructor() {
+  constructor(public snackBar: MatSnackBar) {
     if (localStorage.getItem('markers')) {
       this.markers = JSON.parse(localStorage.getItem('markers'));
     }
@@ -29,11 +30,13 @@ export class MapComponent implements OnInit {
     const marker = new Marker(lat, lng);
     this.markers.push(marker);
     this.saveInLocalStorage();
+    this.snackBar.open('Marker added', 'Close');
   }
 
   deleteMarker(index: number) {
     this.markers.splice(index, 1);
     this.saveInLocalStorage();
+    this.snackBar.open('Marker deleted', 'Close');
   }
 
   saveInLocalStorage() {
