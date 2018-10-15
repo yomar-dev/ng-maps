@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Marker } from '../../classes/marker.class';
 import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { EditMapComponent } from './edit-map.component';
+
 
 @Component({
   selector: 'app-map',
@@ -11,10 +14,10 @@ export class MapComponent implements OnInit {
 
   markers: Marker[] = [];
 
-  lat = 51.678418;
-  lng = 7.809007;
+  lat = 4.6638492;
+  lng = -74.1329011;
 
-  constructor(public snackBar: MatSnackBar) {
+  constructor(public snackBar: MatSnackBar, public dialog: MatDialog) {
     if (localStorage.getItem('markers')) {
       this.markers = JSON.parse(localStorage.getItem('markers'));
     }
@@ -37,6 +40,22 @@ export class MapComponent implements OnInit {
     this.markers.splice(index, 1);
     this.saveInLocalStorage();
     this.snackBar.open('Marker deleted', 'Close', { duration: 2000 });
+  }
+
+  editMarker(marker: Marker) {
+    const dialogRef = this.dialog.open(EditMapComponent, {
+      width: '250px',
+      data: { title: marker.title, desc: marker.desc }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) { return; }
+
+      marker.title = result.title;
+      marker.desc = result.desc;
+      this.saveInLocalStorage();
+      this.snackBar.open('Marker updated', 'Close', { duration: 2000 });
+    });
   }
 
   saveInLocalStorage() {
