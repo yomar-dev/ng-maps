@@ -27,6 +27,11 @@ export class MapComponent implements OnInit {
 
     const marker = new Marker(lat, lng);
     this.markers.push(marker);
+    this.saveInLocalStorage();
+  }
+
+  saveInLocalStorage() {
+    localStorage.setItem('markers', JSON.stringify(this.markers));
   }
 
 }
