@@ -30,13 +30,13 @@ export class MapComponent implements OnInit {
     const marker = new Marker(lat, lng);
     this.markers.push(marker);
     this.saveInLocalStorage();
-    this.snackBar.open('Marker added', 'Close');
+    this.snackBar.open('Marker added', 'Close', { duration: 2000 });
   }
 
   deleteMarker(index: number) {
     this.markers.splice(index, 1);
     this.saveInLocalStorage();
-    this.snackBar.open('Marker deleted', 'Close');
+    this.snackBar.open('Marker deleted', 'Close', { duration: 2000 });
   }
 
   saveInLocalStorage() {
